@@ -36,15 +36,15 @@ while True:
 
    
     # 두 이미지 간의 차이 계산
-    #diff = cv2.absdiff(frame, frame_prev) 
+    diff = cv2.absdiff(frame, frame_prev) 
     
     
 
     # 결과 이미지 출력
-    #cv2.imshow("Difference", diff)
+    cv2.imshow("Difference", diff)
 
     # 움직임 감지
-    motion_detection(frame_prev, frame)
+    #motion_detection(frame_prev, frame)
     
     # 이전 프레임을 저장합니다.
     frame_prev = frame.copy()
