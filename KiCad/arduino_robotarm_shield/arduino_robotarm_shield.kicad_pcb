@@ -71,7 +71,7 @@
       (mirror false)
       (drillshape 0)
       (scaleselection 1)
-      (outputdirectory "C:/Users/user/Downloads/Arduino-Shield-Template-master/arduino_robotarm_shield/")
+      (outputdirectory "./")
     )
   )
 
