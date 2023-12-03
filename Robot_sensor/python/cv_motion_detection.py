@@ -1,62 +1,62 @@
 import cv2
-import numpy as np
-import time 
+import sys
 
-# 카메라 열기
+# 비디오 파일 열기
 cap = cv2.VideoCapture(0)
 
-# 움직임 감지 알고리즘
-def motion_detection(frame_prev, frame_cur):
-    try:
-        # 이전 프레임과 현재 프레임의 차이를 계산합니다.
-        diff = cv2.absdiff(frame_prev, frame_cur)
+if not cap.isOpened():
+    print('Video open failed!')
+    sys.exit()
 
-        # 차이가 일정 수준 이상이면 움직임이 감지된 것으로 간주합니다.
-        threshold = 100
-        ret, thresh = cv2.threshold(diff, threshold, 255, cv2.THRESH_BINARY)
+# 배경 영상 등록
+ret, back = cap.read()
 
-        # 움직임 영역을 찾습니다.
-        contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+if not ret:
+    print('Background image registration failed!')
+    sys.exit()
+    
+# 연산 속도를 높이기 위해 그레이스케일 영상으로 변환
+back = cv2.cvtColor(back, cv2.COLOR_BGR2GRAY)
 
-        # 움직임 영역이 있으면 출력합니다.
-        if len(contours) > 0:
-            print("움직임 감지됨")
-            cv2.drawContours(frame_cur, contours, -1, (0, 255, 0), 2)
-    except:
-        pass
+# 가우시안 블러로 노이즈 제거 (모폴로지, 열기, 닫기 연산도 가능)
+back = cv2.GaussianBlur(back, (0, 0), 1.0)
 
-# 프레임 읽기
-ret, frame = cap.read()
-time.sleep(0.1)
-frame_prev = frame.copy()
-
+# 비디오 매 프레임 처리
 while True:
-    # 현재 프레임을 읽습니다.
     ret, frame = cap.read()
-
-   
-    # 두 이미지 간의 차이 계산
-    diff = cv2.absdiff(frame, frame_prev) 
     
-    
-
-    # 결과 이미지 출력
-    cv2.imshow("Difference", diff)
-
-    # 움직임 감지
-    #motion_detection(frame_prev, frame)
-    
-    # 이전 프레임을 저장합니다.
-    frame_prev = frame.copy()
-
-    # 화면에 출력합니다.
-    cv2.imshow("frame", frame)
-
-    # 키보드 입력을 확인합니다.
-    key = cv2.waitKey(1)
-    if key == 27:
+    if not ret:
         break
+    
+    # 현재 프레임 영상 그레이스케일 변환
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    # 노이즈 제거
+    gray = cv2.GaussianBlur(gray, (0, 0), 1.0)
+    
+    # 차영상 구하기 $ 이진화
+    # absdiff는 차 영상에 절대값
+    diff = cv2.absdiff(gray, back)
+    # 차이가 30이상 255(흰색), 30보다 작으면 0(검정색)
+    _, diff = cv2.threshold(diff, 127, 255, cv2.THRESH_BINARY)
+    
+    # 레이브링을 이용하여 바운딩 박스 표시
+    cnt, _, stats, _ = cv2.connectedComponentsWithStats(diff)
+    for i in range(1, cnt):
+        print("detect")
+        x, y, w, h, s = stats[i]
+        
+        if s < 100:
+            continue
+            
+        cv2.rectangle(frame, (x, y, w, h), (0, 0, 255), 2)
+  
+    
+    cv2.imshow('frame', frame)
+    cv2.imshow('diff', diff)
 
-# 카메라 닫기
+    if cv2.waitKey(30) == 27:
+        break
+    back = gray.copy()
+
 cap.release()
 cv2.destroyAllWindows()
