@@ -1,7 +1,7 @@
-#include "MPU9250.h"
+#include <MPU6050_light.h>
 #include <math.h>
 
-MPU9250 mpu;
+MPU6050 mpu(Wire);
 
 float accelX, accelY, accelZ;
 float gyroX, gyroY, gyroZ;
@@ -11,27 +11,32 @@ float pitch, roll;
 float alpha = 0.95f;
 float beta = 1.0f - alpha;
 
+unsigned long timer = 0;
+
 void setup() {
     Serial.begin(115200);
     Wire.begin();
     delay(2000);
 
-    if (!mpu.setup(0x68)) {  // change to your own address
-        while (1) {
-            Serial.println("MPU connection failed. Please check your connection with `connection_check` example.");
-            delay(5000);
-        }
-    }
+    byte status = mpu.begin();
+    Serial.print(F("MPU6050 status: "));
+    Serial.println(status);
+    while(status!=0){ } // stop everything if could not connect to MPU6050
+    
+    Serial.println(F("Calculating offsets, do not move MPU6050"));
+    delay(1000);
+    mpu.calcOffsets(true,true); // gyro and accelero
+    Serial.println("Done!\n");
 }
 
 void loop() {
-    if (mpu.update()) {
-        static uint32_t prev_ms = millis();
-        if (millis() > prev_ms + 250) {
-            print_pitch_roll();
-            prev_ms = millis();
-        }
+   mpu.update();
+
+    if(millis() - timer > 200){ // print data every second
+        print_pitch_roll();
+        timer = millis();
     }
+
 }
 
 void print_pitch_roll() {
@@ -47,9 +52,9 @@ void print_pitch_roll() {
     Serial.print(", ");
     Serial.print(roll, 2);
     Serial.print(" lib Pitch Roll: ");
-    Serial.print(mpu.getPitch(), 2);
+    Serial.print(mpu.getAngleX(), 2);
     Serial.print(", ");
-    Serial.println(mpu.getRoll(), 2);
+    Serial.println(mpu.getAngleY(), 2);
 }
 
 // Calculate the pitch and roll angles from the gyro and accelerometer readings
