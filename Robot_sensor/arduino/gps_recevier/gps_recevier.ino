@@ -14,5 +14,4 @@ void loop() {
   if(gps.available()){
     Serial.write(gps.read());
   }
-
 }

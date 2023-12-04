@@ -1,9 +1,6 @@
 /* Get all possible data from MPU6050
  * Accelerometer values are given as multiple of the gravity [1g = 9.81 m/s²]
  * Gyro values are given in deg/s
- * Angles are given in degrees
- * Note that X and Y are tilt angles and not pitch/roll.
- *
  * License: MIT
  */
 

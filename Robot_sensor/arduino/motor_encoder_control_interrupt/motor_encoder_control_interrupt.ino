@@ -1,4 +1,4 @@
-* The purpose of this code is to count the ouput pulses or 
+/* The purpose of this code is to count the ouput pulses or 
  * the encoder outputs as you rotate the Motor shaft. You can run the 
  * same code on the Arduino Uno, Arduino Nano, Arduino Mega, etc.
  */
