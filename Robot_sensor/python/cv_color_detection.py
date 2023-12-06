@@ -13,7 +13,7 @@ while True:
 
     # 빨간색의 범위를 정의합니다.
     lower_red = np.array([0, 100, 100])
-    upper_red = np.array([10, 255, 255])
+    upper_red = np.array([40, 255, 255])
 
     # 정의한 범위 내의 픽셀을 찾습니다.
     red_mask = cv2.inRange(hsv_frame, lower_red, upper_red)
@@ -24,6 +24,7 @@ while True:
     # 결과 프레임을 출력합니다.
     cv2.imshow('Red Objects Tracking', red_objects)
     cv2.imshow('mask', red_mask)
+    cv2.imshow('hsv', hsv_frame)
 
     # 'q' 키를 누르면 루프를 종료합니다.
     if cv2.waitKey(1) & 0xFF == ord('q'):
