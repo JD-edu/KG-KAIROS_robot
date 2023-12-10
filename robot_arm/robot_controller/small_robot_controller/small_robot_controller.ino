@@ -1,6 +1,24 @@
 #include<Servo.h>
+#include <U8x8lib.h>
 
 Servo base;
+Servo shoulder;
+Servo upperarm;
+Servo forearm;
+
+int baseAngle = 90;
+int shoulderAngle = 90;
+int upperarmAngle = 90;
+
+String baseAngle_str;
+String shoulder_str;
+String upperarm_str;
+String inString;
+
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 64 // OLED display height, in pixels
+
+U8X8_SSD1306_128X64_NONAME_HW_I2C u8x8(/* reset=*/ U8X8_PIN_NONE); 
 
 int servoParallelControl (int thePos, Servo theServo, int speed){
     // This function moves a servo a certain number of steps toward a desired position and 
@@ -14,7 +32,7 @@ int servoParallelControl (int thePos, Servo theServo, int speed){
     
     //define where the pos is with respect to the command
     // if the current position is less that the desired move the position up
-    if (startPos < (thePos-5)){
+    if (startPos < (thePos)){
        newPos = newPos + 1;               
        theServo.write(newPos);
        delay(speed);
@@ -22,7 +40,7 @@ int servoParallelControl (int thePos, Servo theServo, int speed){
     }
 
     // Else if the current position is greater than the desired move the servo down
-    else if (newPos > (thePos + 5)){
+    else if (newPos > (thePos)){
       newPos = newPos - 1;
       theServo.write(newPos);
       delay(speed);
@@ -39,52 +57,75 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
   base.attach(2);
-  base.write(90);
+  base.write(baseAngle);
+  shoulder.attach(3);
+  shoulder.write(shoulderAngle);
+  upperarm.attach(4);
+  upperarm.write(upperarmAngle);
+
+  u8x8.begin();
+  u8x8.setPowerSave(0);
 
 }
 
 void loop() {
-  // These values are the status of whether or not the joint has reached its position yet
-  // variables declared inside of some part of the program, like these, are called "local Variables"
-  int status1 = 0;  //base status
-  int status2 = 0;  //shoulder status
-  int status3 = 0;  //elbow status
-  int status4 = 0;  //gripper status
+  
+  
+  if (Serial.available() > 0){  
+    if(Serial.available()){
+      inString = Serial.readStringUntil('\n');
+      // angle 0
+      int first = inString.indexOf('a');
+      int second = inString.indexOf('b');
+      baseAngle_str = inString.substring(first+1, second);
+      baseAngle = baseAngle_str.toInt();    
+      Serial.print(baseAngle);
+      Serial.print(" ");
+      // angle 1
+      first = inString.indexOf('b');
+      second = inString.indexOf('c');
+      shoulder_str = inString.substring(first+1, second);
+      shoulderAngle = shoulder_str.toInt();
+      Serial.print(shoulderAngle);
+      Serial.print(" ");
+      // angle 2
+      first = inString.indexOf('c');
+      second = inString.indexOf('d');
+      upperarm_str = inString.substring(first+1, second);
+      upperarmAngle = upperarm_str.toInt();
+      Serial.print(upperarmAngle);
+      Serial.println(" ");
+      // These values are the status of whether or not the joint has reached its position yet
+      // variables declared inside of some part of the program, like these, are called "local Variables"
+      int status1 = 0;  //base status
+      int status2 = 0;  //shoulder status
+      int status3 = 0;  //elbow status
+      int status4 = 0;  //gripper status
 
-  int done = 0 ;    // this value tells when all the joints have reached thier positions
+      int done = 0 ;    // this value tells when all the joints have reached thier positions
 
-  if(Serial.available() > 0){
-    char c = Serial.read();
-    if(c == 'a'){
       while(done == 0){     // Loop until all joints have reached thier positions                      && ready == 1
         //move the servo to the desired position
         //This block of code uses "Functions" to make is more condensed.
-        status1 = servoParallelControl(30, base, 20);         
-        //status2 = servoParallelControl(desiredAngle.shoulder,  shoulderServo, desiredDelay);
-        //status3 = servoParallelControl(desiredAngle.elbow, elbowServo, desiredDelay);      
+        status1 = servoParallelControl(baseAngle, base, 20);         
+        status2 = servoParallelControl(shoulderAngle, shoulder, 20);
+        status3 = servoParallelControl(upperarmAngle, upperarm, 20);      
         //status4 = servoParallelControl(desiredGrip, gripperServo, desiredDelay);  
 
         // Check whether all the joints have reached their positions
-        if (status1 == 1 ){
+        if (status1 == 1 && status2 == 1 && status3 == 1){
+        //if (status3 == 1){
           done = 1; //When done =1 then the loop will stop
-          Serial.println("OK");
-        }   
-      }// end of while
-    }else if(c == 'b'){
-      while(done == 0){     // Loop until all joints have reached thier positions                      && ready == 1
-        //move the servo to the desired position
-        //This block of code uses "Functions" to make is more condensed.
-        status1 = servoParallelControl(60, base, 20);         
-        //status2 = servoParallelControl(desiredAngle.shoulder,  shoulderServo, desiredDelay);
-        //status3 = servoParallelControl(desiredAngle.elbow, elbowServo, desiredDelay);      
-        //status4 = servoParallelControl(desiredGrip, gripperServo, desiredDelay);  
-
-        // Check whether all the joints have reached their positions
-        if (status1 == 1 ){
-          done = 1; //When done =1 then the loop will stop
-          Serial.println("OK");
         }   
       }// end of while
     }
+
+    u8x8.setFont(u8x8_font_chroma48medium8_r);
+    u8x8.drawString(0,0,inString.c_str());
+    u8x8.drawString(0,1,baseAngle_str.c_str());
+    u8x8.drawString(0,2,shoulder_str.c_str());
+    u8x8.drawString(0,3,upperarm_str.c_str());
+    delay(100);
+    
   }
 }
