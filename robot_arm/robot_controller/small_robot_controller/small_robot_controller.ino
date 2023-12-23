@@ -9,10 +9,12 @@ Servo forearm;
 int baseAngle = 90;
 int shoulderAngle = 90;
 int upperarmAngle = 90;
+int forearmAngle = 90;
 
 String baseAngle_str;
 String shoulder_str;
 String upperarm_str;
+String forearm_str;
 String inString;
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
@@ -62,7 +64,8 @@ void setup() {
   shoulder.write(shoulderAngle);
   upperarm.attach(4);
   upperarm.write(upperarmAngle);
-
+  forearm.attach(5);
+  forearm.write(forearmAngle);
   u8x8.begin();
   u8x8.setPowerSave(0);
 
@@ -94,6 +97,12 @@ void loop() {
       upperarm_str = inString.substring(first+1, second);
       upperarmAngle = upperarm_str.toInt();
       Serial.print(upperarmAngle);
+      // angle 3
+      first = inString.indexOf('d');
+      second = inString.indexOf('e');
+      forearm_str = inString.substring(first+1, second);
+      forearmAngle = forearm_str.toInt();
+      Serial.print(forearmAngle);
       Serial.println(" ");
       // These values are the status of whether or not the joint has reached its position yet
       // variables declared inside of some part of the program, like these, are called "local Variables"
@@ -110,10 +119,10 @@ void loop() {
         status1 = servoParallelControl(baseAngle, base, 20);         
         status2 = servoParallelControl(shoulderAngle, shoulder, 20);
         status3 = servoParallelControl(upperarmAngle, upperarm, 20);      
-        //status4 = servoParallelControl(desiredGrip, gripperServo, desiredDelay);  
+        status4 = servoParallelControl(forearmAngle, forearm, 20);  
 
         // Check whether all the joints have reached their positions
-        if (status1 == 1 && status2 == 1 && status3 == 1){
+        if (status1 == 1 && status2 == 1 && status3 == 1 && status4 == 1){
         //if (status3 == 1){
           done = 1; //When done =1 then the loop will stop
         }   

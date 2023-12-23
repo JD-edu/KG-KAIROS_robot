@@ -4,7 +4,7 @@ from tkinter import messagebox
 import serial
 
 def robot_move():
-    cmd = 'a'+str(int(base_bar.get()))+'b'+str(int(shoulder_bar.get()))+'c'+str(int(upperarm_bar.get()))+'d\n'
+    cmd = 'a'+str(int(base_bar.get()))+'b'+str(int(shoulder_bar.get()))+'c'+str(int(upperarm_bar.get()))+'d'+str(int(forearm_bar.get()))+'e\n'
     seq.write(cmd.encode())
     print(cmd.encode())
 
@@ -23,7 +23,9 @@ def shoulder_bar_changed(event):
 
 def upperarm_bar_changed(event):
     print(upperarm_bar.get())
-   
+    
+def forearm_bar_changed(event):
+    print(forearm_bar.get())
 
 root = tk.Tk()
 root.title('KG-KAIROS Robot Control')
@@ -44,6 +46,10 @@ shoulder_bar.pack()
 upperarm_bar = ttk.Scale(root, from_=30, to=120, orient=tk.HORIZONTAL, command=upperarm_bar_changed)
 upperarm_bar.pack()
 
+# 슬라이드 버튼 생성
+forearm_bar = ttk.Scale(root, from_=30, to=120, orient=tk.HORIZONTAL, command=forearm_bar_changed)
+forearm_bar.pack()
+
 button = tk.Button(root, text='로봇 원점 이동', command=robot_origin)
 button.pack()
 
@@ -56,7 +62,7 @@ seq = serial.Serial(
             timeout=1
         )
         
-seq.port = "COM49"
+seq.port = "COM50"
 seq.open()
 
 root.mainloop()
