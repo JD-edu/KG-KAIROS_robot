@@ -35,7 +35,7 @@ root = tk.Tk()
 root.title('KG-KAIROS Robot Control')
 root.geometry('600x480')
         
-button = tk.Button(root, text='로봇 이동하기', command=robot_move)
+button = tk.Button(root, text='robot move', command=robot_move)
 button.pack()
 
 # 슬라이드 버튼 생성
