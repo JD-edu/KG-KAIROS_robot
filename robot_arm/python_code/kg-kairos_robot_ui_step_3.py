@@ -62,7 +62,7 @@ seq = serial.Serial(
             timeout=1
         )
         
-seq.port = "COM50"
+seq.port = "COM7"
 seq.open()
 
 root.mainloop()
