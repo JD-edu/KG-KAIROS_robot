@@ -44,7 +44,7 @@ try:
     ser = serial.Serial('COM3',9600, timeout=1)
 except:
     pass
-my_chain = ikpy.chain.Chain.from_urdf_file("testbot.urdf",active_links_mask=[False, True, True, True, True, True, True])
+my_chain = ikpy.chain.Chain.from_urdf_file("poppy_ergo.URDF")
 
 target_position = [ 1, 1, 0]
 

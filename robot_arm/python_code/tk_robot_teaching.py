@@ -12,6 +12,7 @@ import tempfile
 import subprocess
 
 #Python 2.7 imports
+'''
 try:
     import Tkinter as tk
     from Tkinter import StringVar
@@ -24,14 +25,15 @@ try:
     import commands
 #Python 3.x imports
 except ImportError:
-    import tkinter as tk
-    from tkinter import ttk
-    from tkinter import messagebox
-    from tkinter import filedialog
-    from http.server import SimpleHTTPRequestHandler
-    from http.server import HTTPServer
-    import queue as Queue
-    import subprocess as commands
+    '''
+import tkinter as tk
+from tkinter import ttk
+from tkinter import messagebox
+from tkinter import filedialog
+from http.server import SimpleHTTPRequestHandler
+from http.server import HTTPServer
+import queue as Queue
+import subprocess as commands
 
 angle_0 = 0
 angle_1 = 0
@@ -90,7 +92,7 @@ class ServerThread(Thread):
 
     def run(self):
         self.server.serve_forever()
-
+'''
 class Handler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     def do_HEAD(self):
         """Send response headers"""
@@ -122,7 +124,7 @@ class Handler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         if length:
             text = self.rfile.read(length)
                         
-            print "sketch to upload: " + text
+            print("sketch to upload: " + text)
 
             dirname = tempfile.mkdtemp()
             sketchname = os.path.join(dirname, os.path.basename(dirname)) + ".py"
@@ -132,7 +134,7 @@ class Handler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             # get serial port name for subprocess 
             serial_port_args = "--serial="+serial_thread.set_serial_port()
 
-            print "created sketch at %s" % (sketchname,)
+            print("created sketch at %s" % (sketchname,))
             # invoke arduino to build/upload
             compile_args = [
                 'python',
@@ -142,11 +144,11 @@ class Handler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 
             #compile_args.append(sketchname)
 
-            print "Uploading with %s" % (" ".join(compile_args))
+            print("Uploading with %s" % (" ".join(compile_args)))
             rc = subprocess.call(compile_args)
            
             if not rc == 0:
-                print "python returned " + `rc`                            
+                #print("python returned " + `rc`)                            
                 self.send_response(400)
             else:
                 self.send_response(200)
@@ -155,7 +157,7 @@ class Handler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         else:
             self.send_response(400)
 
-
+'''
 class SerialThread(Thread):
 
     def __init__(self):
@@ -642,9 +644,9 @@ class Gui(tk.Tk):
       
 if __name__ == '__main__':
     root = Gui()
-    serial_queue = Queue.Queue()
-    server_queue = Queue.Queue()
-    serial_thread = SerialThread()
-    server_thread = ServerThread()
-    server_thread.start()
+    #serial_queue = Queue.Queue()
+    #server_queue = Queue.Queue()
+    #serial_thread = SerialThread()
+    #server_thread = ServerThread()
+    #server_thread.start()
     root.mainloop()
