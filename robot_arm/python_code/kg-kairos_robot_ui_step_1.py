@@ -33,6 +33,9 @@ shoulder_bar.pack()
 upperarm_bar = ttk.Scale(root, from_=0, to=100, orient=tk.HORIZONTAL, command=upperarm_bar_changed)
 upperarm_bar.pack()
 
+
+
+
 root.mainloop()
         
 

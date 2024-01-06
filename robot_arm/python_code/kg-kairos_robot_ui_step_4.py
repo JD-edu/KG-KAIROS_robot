@@ -4,20 +4,24 @@ from tkinter import messagebox
 import serial
 
 def robot_move():
-    cmd = 'a'+str(int(base_bar.get()))+'b'+str(int(shoulder_bar.get()))+'c'+str(int(upperarm_bar.get()))+'d'+str(int(forearm_bar.get()))+'e\n'
+    cmd = '2a'+str(int(base_bar.get()))+'b'+str(int(shoulder_bar.get()))+'c'+str(int(upperarm_bar.get()))+'d'+str(int(forearm_bar.get()))+'e\n'
     seq.write(cmd.encode())
     print(cmd.encode())
 
 def robot_origin():
-    cmd = 'a90b90c90d90e\n'
+    cmd = '2a90b90c90d90e\n'
     seq.write(cmd.encode())
     base_bar.set(90)
     shoulder_bar.set(90)
     upperarm_bar.set(90)
     forearm_bar.set(90)
     print(cmd.encode())
-    
 
+def read_robot_angle():
+    cmd = '111\n'
+    seq.write(cmd.encode())
+    print(cmd.encode())
+    
 def base_bar_changed(event):
     print(base_bar.get())
     
@@ -61,6 +65,9 @@ forearm_bar.pack()
 button = tk.Button(root, text='로봇 원점 이동', command=robot_origin)
 button.pack()
 
+button = tk.Button(root, text='로봇 각도 읽기', command=read_robot_angle)
+button.pack()
+
 # Serial port 
 seq = serial.Serial(
             baudrate=115200,
@@ -70,7 +77,7 @@ seq = serial.Serial(
             timeout=1
         )
         
-seq.port = "COM50"
+seq.port = "COM8"
 seq.open()
 
 root.mainloop()

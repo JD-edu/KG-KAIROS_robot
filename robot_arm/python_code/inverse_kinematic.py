@@ -46,7 +46,7 @@ except:
     pass
 my_chain = ikpy.chain.Chain.from_urdf_file("poppy_ergo.URDF")
 
-target_position = [ 1, 1, 0]
+target_position = [ 0, 0, 1]
 
 target_orientation = [-1, 0, 0]
 
