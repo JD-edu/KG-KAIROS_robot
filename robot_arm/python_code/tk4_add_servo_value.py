@@ -14,7 +14,7 @@ serial_list = ['시리얼 포트를 선택하세요.']
 
 root = tk.Tk()
 root.title('KG-KAIROS Robot Control')
-#root.geometry('600x480')
+root.geometry('600x480')
 
 m_serial_select = ttk.Frame(root)
 var = tk.StringVar()
