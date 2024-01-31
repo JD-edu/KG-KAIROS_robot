@@ -160,6 +160,21 @@ void meansensors(){
     }
     if (i==(buffersize+100)){
       mean_ax=buff_ax/buffersize;
+156157158159160161162163164165166167168169170
+    delay(1000);
+  }
+
+  if (state==1) {
+    Serial.println("\nCalculating offsets...");
+    calibration();
+    state++;
+    delay(1000);
+  }
+
+
+Not connected. Select a board and a port to connect automatically.
+New Line
+
       mean_ay=buff_ay/buffersize;
       mean_az=buff_az/buffersize;
       mean_gx=buff_gx/buffersize;
