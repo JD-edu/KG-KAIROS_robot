@@ -1,0 +1,6 @@
+﻿  kairos_sfml_test_2.cpp
+C:\Users\conne\conner\KG-KAIROS_robot\Linux_CC++\kairos_sfml_test_2\kairos_sfml_test_2\kairos_sfml_test_2.cpp(14,28): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\conne\conner\KG-KAIROS_robot\Linux_CC++\kairos_sfml_test_2\kairos_sfml_test_2\kairos_sfml_test_2.cpp(14,23): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+C:\Users\conne\conner\KG-KAIROS_robot\Linux_CC++\kairos_sfml_test_2\kairos_sfml_test_2\kairos_sfml_test_2.cpp(20,48): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\conne\conner\KG-KAIROS_robot\Linux_CC++\kairos_sfml_test_2\kairos_sfml_test_2\kairos_sfml_test_2.cpp(20,36): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  kairos_sfml_test_2.vcxproj -> C:\Users\conne\conner\KG-KAIROS_robot\Linux_CC++\kairos_sfml_test_2\x64\Debug\kairos_sfml_test_2.exe
