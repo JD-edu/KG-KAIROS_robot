@@ -10,6 +10,9 @@ using namespace sf;
 class Missle {
 public:
 	CircleShape missle;
+	Missle() {
+
+	}
 	Missle(int x, int y, int rad) {
 		missle.setRadius(rad);
 		missle.setFillColor(Color::Blue);

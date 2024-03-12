@@ -85,11 +85,11 @@ def detect_edges(frame):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     show_image("hsv", hsv)
     # red 
-    lower_red1 = np.array([0, 50, 50])
-    upper_red1 = np.array([40, 255, 255])
+    lower_red1 = np.array([0, 100, 100])
+    upper_red1 = np.array([10, 255, 255])
     mask1 = cv2.inRange(hsv, lower_red1, upper_red1)
-    lower_red2 = np.array([160, 50, 50])
-    upper_red2 = np.array([180, 255, 255])
+    lower_red2 = np.array([160, 100, 100])
+    upper_red2 = np.array([179, 255, 255])
     mask2 = cv2.inRange(hsv, lower_red2, upper_red2)
     mask = mask1+mask2
 

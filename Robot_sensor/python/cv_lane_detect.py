@@ -43,7 +43,7 @@ cv_detector = JdOpencvLaneDetect()
 cv2.VideoCapture() function create camera object.  
 '''
 # Camera object: reading image from camera 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture("./Robot_sensor/python/car_video.avi")
 # Setting camera resolution as 320x240
 cap.set(3, 320)
 cap.set(4, 240)
