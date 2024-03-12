@@ -91,13 +91,13 @@ void clear_oled(){
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
-  base.attach(2);
+  base.attach(3);
   base.write(baseAngle);
-  shoulder.attach(3);
+  shoulder.attach(5);
   shoulder.write(shoulderAngle);
-  upperarm.attach(4);
+  upperarm.attach(6);
   upperarm.write(upperarmAngle);
-  forearm.attach(5);
+  forearm.attach(9);
   forearm.write(forearmAngle);
   u8x8.begin();
   u8x8.setPowerSave(0);
@@ -179,6 +179,26 @@ void loop() {
         u8x8.drawString(0,2,shoulder_str.c_str());
         u8x8.drawString(0,3,upperarm_str.c_str());
         delay(100);
+      }else if(cmd == '3'){
+        int done = 0;
+        int status1 = 0;  //base status
+        int status2 = 0;  //shoulder status
+        int status3 = 0;  //elbow status
+        int status4 = 0;  //gripper status
+        while(done == 0){     // Loop until all joints have reached thier positions                      && ready == 1
+            //move the servo to the desired position
+            //This block of code uses "Functions" to make is more condensed.
+            status1 = servoParallelControl(90, base, 20);         
+            status2 = servoParallelControl(90, shoulder, 20);
+            status3 = servoParallelControl(90, upperarm, 20);      
+            status4 = servoParallelControl(90, forearm, 20);  
+
+            // Check whether all the joints have reached their positions
+            if (status1 == 1 && status2 == 1 && status3 == 1 && status4 == 1){
+            //if (status3 == 1){
+              done = 1; //When done =1 then the loop will stop
+            }   
+          }// end of while
       }
     }
 
