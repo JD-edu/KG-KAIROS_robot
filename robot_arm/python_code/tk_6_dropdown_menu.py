@@ -62,7 +62,7 @@ seq = serial.Serial(
         timeout=1
     )
 
-seq.port = "COM17"
+seq.port = "COM8"
 seq.open()
 
 

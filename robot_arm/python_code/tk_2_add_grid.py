@@ -42,7 +42,7 @@ seq = serial.Serial(
     )
 
 
-seq.port = "COM17"
+seq.port = "COM8"
 seq.open()
 
 root = tk.Tk()
@@ -51,19 +51,19 @@ root.geometry('600x480')
 
 
 # add button using frame 
-m_robot_move_btn = ttk.Frame(root)
-m_robot_reset_btn = ttk.Frame(root)
+m_robot_move = ttk.Frame(root)
+m_robot_reset = ttk.Frame(root)
 
-robot_move_btn = ttk.Button(m_robot_move_btn, text="move robot", command=move_robot)
+robot_move_btn = ttk.Button(m_robot_move, text="move robot", command=move_robot)
 robot_move_btn.pack(side='left',padx=10) 
         
-robot_reset_btn = ttk.Button(m_robot_reset_btn, text="reset robot", command=reset_robot)
+robot_reset_btn = ttk.Button(m_robot_reset, text="reset robot", command=reset_robot)
 robot_reset_btn.pack(side='left',padx=10)
 
 
 # grid layout 
-m_robot_move_btn.grid(column=1,row=0,columnspan=3,padx=10,pady=10,sticky='w')
-m_robot_reset_btn.grid(column=2,row=0,padx=10,pady=5,sticky='w')
+m_robot_move.grid(column=1,row=1,columnspan=3,padx=10,pady=10,sticky='w')
+m_robot_reset.grid(column=2,row=2,padx=10,pady=5,sticky='w')
 
 root.mainloop()
 

@@ -1,0 +1,4 @@
+﻿  sfml_class_inherite.cpp
+C:\Users\conne\conner\KG-KAIROS_robot\Linux_CC++\sfml_class_inherite\sfml_class_inherite\sfml_class_inherite.cpp(18,24): warning C4244: '=': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\conne\conner\KG-KAIROS_robot\Linux_CC++\sfml_class_inherite\sfml_class_inherite\sfml_class_inherite.cpp(40,24): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  sfml_class_inherite.vcxproj -> C:\Users\conne\conner\KG-KAIROS_robot\Linux_CC++\sfml_class_inherite\x64\Debug\sfml_class_inherite.exe

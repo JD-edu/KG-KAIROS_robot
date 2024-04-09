@@ -43,7 +43,7 @@ seq = serial.Serial(
     )
 
 
-seq.port = "COM17"
+seq.port = "COM8"
 seq.open()
 
 

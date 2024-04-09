@@ -31,6 +31,11 @@ import sys
 
 def select_serial(event):
     print("serial drop down")
+    
+def serial_changed(varname, index, mode):
+    global var, seq
+    print(var.get())
+    seq.port = var.get()
 
 def move_robot():
     print("robot move")
@@ -56,6 +61,14 @@ def run_robot():
 
 def stop_robot():
     pass
+
+def enable_serial():
+    seq.open()
+    
+def disable_serial():
+    seq.close()
+
+
 # serial finder function 
 def startTimer(iTimeSec,isRepeated):
     timer_thread1 = threading.Timer(iTimeSec, timerCallBack,[iTimeSec,isRepeated])
@@ -80,6 +93,7 @@ def update_option_menu():
     global dropdown
     global serial_list
     menu = dropdown["menu"]
+    print(menu)
     menu.delete(0, "end")
     for string in serial_list:
         menu.add_command(label=string, command=lambda value=string: var.set(value))
@@ -114,8 +128,8 @@ seq = serial.Serial(
         timeout=1
     )
 
-seq.port = "COM17"
-seq.open()
+#seq.port = "COM8"
+#seq.open()
 
 
 
@@ -141,6 +155,7 @@ print(*list1)
 dropdown = ttk.OptionMenu(m_serial_select, var, serial_list[0], *serial_list, command = select_serial)
 dropdown.pack()
 dropdown.configure(state='disable')
+var.trace_add('write', serial_changed)
 
 # add button using frame 
 m_robot_move_btn = ttk.Frame(root)
@@ -151,6 +166,16 @@ robot_move_btn.pack(side='left',padx=10)
         
 robot_reset_btn = ttk.Button(m_robot_reset_btn, text="reset robot", command=reset_robot)
 robot_reset_btn.pack(side='left',padx=10)
+
+# add button using frame 
+m_serial_on = ttk.Frame(root)
+m_serial_off = ttk.Frame(root)
+
+serial_on_btn = ttk.Button(m_serial_on, text="enable serial", command=enable_serial)
+serial_on_btn.pack(side='left',padx=10) 
+        
+serial_off_btn = ttk.Button(m_serial_off, text="disabe serial", command=disable_serial)
+serial_off_btn.pack(side='left',padx=10)
 
 # add servo value  frame
 m_link0 = ttk.Frame(root)       # link 0  
@@ -183,5 +208,7 @@ m_slide_0.grid(column=1,row=6,padx=15,pady=5,sticky='w')
 m_robot_run_btn.grid(column=1, row=8,padx=10,pady=5,sticky='w')
 m_robot_stop_btn.grid(column=2, row=8,padx=10,pady=5,sticky='w')
 m_serial_select.grid(column=1,row=9,columnspan=3,padx=10,pady=10,sticky='w')
+m_serial_on.grid(column=1, row=10,padx=10,pady=5,sticky='w')
+m_serial_off.grid(column=2, row=10,padx=10,pady=5,sticky='w')
        
 root.mainloop()
