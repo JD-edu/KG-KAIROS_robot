@@ -1,26 +1,18 @@
-import socket  
-import time              
+import socket
 
-sock = socket.socket()
-
-host = "172.30.1.75" #ESP32 IP in local network
-port = 80             #ESP32 Server Port    
-
-sock.connect((host, port))
-
-
+print("Creating server...")
+s = socket.socket()
+s.bind(('0.0.0.0', 10000))
+s.listen(0)
 
 while True:
-    message = b"Hello World"
-    sock.send(message)
-    time.sleep(1)
-data = ""     
-
-
-
-#while len(data) < len(message):
-#    data += sock.recv(1)
-
-print(data)
-
-sock.close()
+    client, addr = s.accept()
+    while True:
+        content = client.recv(32)
+        if len(content) == 0:
+            client.send("uga".encode())
+            break
+        else:
+            print(content.decode())
+    print("Closing connection")
+    client.close()
