@@ -43,7 +43,7 @@ int motor_status = STOP;
 
 WebServer server(80);
 
-void go_forward(){
+void go_forward(){c:\Users\conne\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.17\libraries\WebServer\src\WebServer.cpp
   Serial.println("forward");
   digitalWrite(M1_A, LOW);
   digitalWrite(M1_B, HIGH);
@@ -197,7 +197,7 @@ String SendHTML(uint8_t motor_status){
   ptr +="</head>\n";
   ptr +="<body>\n";
   ptr +="<h1>ESP32 Web Server</h1>\n";
-  ptr +="<h3>Using Access Point(AP) Mode</h3>\n";
+  ptr +="<h3>Using Station Mode</h3>\n";
 
   switch(motor_status){
     case 1:

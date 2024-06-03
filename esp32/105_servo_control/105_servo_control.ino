@@ -31,7 +31,7 @@ BluetoothSerial SerialBT;
 void servo_center(){
   myservo1.write(90);
   myservo2.write(90);
-  Serial.println("Servo control with Blutooth...");
+  
 }
 
 void setup() {
@@ -44,6 +44,8 @@ void setup() {
   myservo1.attach(SERVO1, 500, 2400);
   myservo2.setPeriodHertz(50); 
   myservo2.attach(SERVO2, 500, 2400);
+  SerialBT.begin("KAIROS 1"); //Bluetooth device name
+   Serial.begin(115200);
 }
 
 int angle1 = 90;
@@ -52,30 +54,12 @@ int angle2 = 90;
 void loop() {
   if (SerialBT.available()) {
     char c = SerialBT.read();
-    Serial.println(c);
     if(c == 'a'){
-      angle1++;
-      if(angle1 > 180)
-        angle1 = 180;
-      myservo1.write(angle1);
-    }else if(c == 'd'){
-      angle1 --;
-      if(angle1 < 0)
-        angle1 = 0;
-      myservo1.write(angle1);
-    }
-      
-    if(c == 'w'){
-      angle2++;
-      if(angle2 > 180)
-        angle2 = 180;
-      myservo2.write(angle2);
-    }else if(c == 's'){
-      angle2 --;
-      if(angle2 < 0)
-        angle2 = 0;
-      myservo2.write(angle2);
+      Serial.println(c);
+      myservo1.write(120);
+    }else if(c =='w'){
+      Serial.println(c);
+      myservo1.write(90);
     }
   }
-
 }

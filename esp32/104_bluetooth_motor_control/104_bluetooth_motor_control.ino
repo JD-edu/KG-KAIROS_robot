@@ -24,8 +24,8 @@ SOFTWARE.*/
 
 BluetoothSerial SerialBT;
 
-#define M1_B    26
-#define M1_A    27
+#define M1_B    22
+#define M1_A    23
 #define M2_B    12
 #define M2_A    14
 #define M3_B    15
@@ -103,7 +103,7 @@ void stop(){
 
 void setup() {
   Serial.begin(115200);
-  SerialBT.begin("JD 4wheel robot"); //Bluetooth device name
+  SerialBT.begin("KAIROS 1"); //Bluetooth device name
   Serial.println("The device started, now you can pair it with bluetooth!");
   pinMode(M1_A, OUTPUT);
   pinMode(M1_B, OUTPUT);
