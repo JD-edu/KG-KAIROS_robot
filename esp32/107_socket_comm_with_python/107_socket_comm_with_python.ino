@@ -32,7 +32,6 @@ void loop() {
         }
     } 
     //client.print("Hello from ESP32!");
-    
     client.stop();
     delay(100);
 }

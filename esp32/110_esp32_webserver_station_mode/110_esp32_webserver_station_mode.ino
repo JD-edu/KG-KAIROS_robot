@@ -24,12 +24,6 @@ SOFTWARE.*/
 
 #define M1_B    26
 #define M1_A    27
-#define M2_B    12
-#define M2_A    14
-#define M3_B    15
-#define M3_A    2
-#define M4_B    4
-#define M4_A    16
 
 #define FORWARD   1
 #define BACKWARD  2
@@ -43,70 +37,22 @@ int motor_status = STOP;
 
 WebServer server(80);
 
-void go_forward(){c:\Users\conne\AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.17\libraries\WebServer\src\WebServer.cpp
+void go_forward(){
   Serial.println("forward");
   digitalWrite(M1_A, LOW);
   digitalWrite(M1_B, HIGH);
-  digitalWrite(M2_A, LOW);
-  digitalWrite(M2_B, HIGH);
-
-  digitalWrite(M3_A, HIGH);
-  digitalWrite(M3_B, LOW);
-  digitalWrite(M4_A, HIGH);
-  digitalWrite(M4_B, LOW);
-   
 }
 
 void go_backward(){
   Serial.println("backward");
   digitalWrite(M1_A, HIGH);
   digitalWrite(M1_B, LOW);
-  digitalWrite(M2_A, HIGH);
-  digitalWrite(M2_B, LOW);
-
-  digitalWrite(M3_A, LOW);
-  digitalWrite(M3_B, HIGH);
-  digitalWrite(M4_A, LOW);
-  digitalWrite(M4_B, HIGH);
-}
-
-void turn_right(){
-  Serial.println("right");
-  digitalWrite(M1_A, LOW);
-  digitalWrite(M1_B, HIGH);
-  digitalWrite(M2_A, LOW);
-  digitalWrite(M2_B, HIGH);
-
-  digitalWrite(M3_A, LOW);
-  digitalWrite(M3_B, HIGH);
-  digitalWrite(M4_A, LOW);
-  digitalWrite(M4_B, HIGH);
-}
-
-void turn_left(){
-  Serial.println("left");
-  digitalWrite(M1_A, HIGH);
-  digitalWrite(M1_B, LOW);
-  digitalWrite(M2_A, HIGH);
-  digitalWrite(M2_B, LOW);
-
-  digitalWrite(M3_A, HIGH);
-  digitalWrite(M3_B, LOW);
-  digitalWrite(M4_A, HIGH);
-  digitalWrite(M4_B, LOW);
 }
 
 void stop(){
   Serial.println("stop");
   digitalWrite(M1_A, LOW);
   digitalWrite(M1_B, LOW);
-  digitalWrite(M2_A, LOW);
-  digitalWrite(M2_B, LOW);
-  
-  digitalWrite(M3_A, LOW);
-  digitalWrite(M3_B, LOW);
-  digitalWrite(M4_A, LOW);
-  digitalWrite(M4_B, LOW);
   delay(200);
 }
 
@@ -115,13 +61,6 @@ void setup() {
 
   pinMode(M1_A, OUTPUT);
   pinMode(M1_B, OUTPUT);
-  pinMode(M2_A, OUTPUT);
-  pinMode(M2_B, OUTPUT);
-  pinMode(M3_A, OUTPUT);
-  pinMode(M3_B, OUTPUT);
-  pinMode(M4_A, OUTPUT);
-  pinMode(M4_B, OUTPUT);
-
   stop();
 
   //connect to your local wi-fi network

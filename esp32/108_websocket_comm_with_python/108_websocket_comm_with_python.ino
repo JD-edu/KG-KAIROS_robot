@@ -2,21 +2,14 @@
 //  websockets library by Markus Sattler
 #include <WiFi.h>
 #include <WebSocketsServer.h>
+#define ssid  "ConnectValue_A401_2G"
+#define password   "CVA401!@#$"
 
-//#define ssid  "ConnectValue_A401_2G"
-//#define password   "CVA401!@#$"
-
-#define ssid  "AndroidHotspot9807"
-#define password   "2384Jeong"
-
-// Globals
 WebSocketsServer webSocket = WebSocketsServer(80);
 
 // Called when receiving any WebSocket message
-void onWebSocketEvent(uint8_t num,
-                      WStype_t type,
-                      uint8_t * payload,
-                      size_t length) {
+void onWebSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length)
+{
 
   // Figure out the type of WebSocket event
   switch(type) {
@@ -54,10 +47,8 @@ void onWebSocketEvent(uint8_t num,
 }
 
 void setup() {
-
   // Start Serial port
   Serial.begin(115200);
-
   // Connect to access point
   Serial.println("Connecting");
   WiFi.begin(ssid, password);
@@ -65,12 +56,10 @@ void setup() {
     delay(500);
     Serial.print(".");
   }
-
   // Print our IP address
   Serial.println("Connected!");
   Serial.print("My IP address: ");
   Serial.println(WiFi.localIP());
-
   // Start WebSocket server and assign callback
   webSocket.begin();
   webSocket.onEvent(onWebSocketEvent);

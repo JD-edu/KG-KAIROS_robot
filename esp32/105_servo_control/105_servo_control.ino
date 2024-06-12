@@ -45,7 +45,7 @@ void setup() {
   myservo2.setPeriodHertz(50); 
   myservo2.attach(SERVO2, 500, 2400);
   SerialBT.begin("KAIROS 1"); //Bluetooth device name
-   Serial.begin(115200);
+  Serial.begin(115200);
 }
 
 int angle1 = 90;
