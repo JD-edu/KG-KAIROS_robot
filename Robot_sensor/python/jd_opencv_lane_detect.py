@@ -33,55 +33,49 @@ show_image = False
 class JdOpencvLaneDetect(object):
     def __init__(self):
         self.curr_steering_angle = 90
+        self.org_img = None
 
-    def get_lane(self, frame):
-        show_image("orignal", frame)
-        lane_lines, frame = detect_lane(frame)
-        return lane_lines, frame
+    def detect_mask(self, frame):
+        mask = detect_mask(frame)
+        show_image('edges', mask, True)
+        return mask
 
-    def get_steering_angle(self, img_lane, lane_lines):
-        if len(lane_lines) == 0:
-            return 0, None
-        new_steering_angle = compute_steering_angle(img_lane, lane_lines)
-        self.curr_steering_angle = stabilize_steering_angle(self.curr_steering_angle, new_steering_angle, len(lane_lines))
+    def detect_edge(self, frame):
+        edges = detect_edges(frame)
+        show_image('edges', edges, True)
+        return edges
+    
+    def crop_image(self, frame):
+        cropped_edges = region_of_interest(frame)
+        show_image('edges cropped', cropped_edges, True)
+        return cropped_edges
+    
+    def find_line_seg(self, frame):
+        line_segment = detect_line_segments(frame)
+        return line_segment
+    
+    def display_line_seg(self, title,  img_org,  line_segment):
+        line_segment_image = display_lines(img_org, line_segment)
+        show_image(title, line_segment_image, True)
 
-        curr_heading_image = display_heading_line(img_lane, self.curr_steering_angle)
-        show_image("heading", curr_heading_image)
+    def get_average_lane(self, frame, line_segment):
+        average_of_lines = average_slope_intercept(frame, line_segment)
+        return average_of_lines
+    
+    def get_steering_angle(self, img_org, average_of_lines):
+        new_steering_angle = compute_steering_angle(img_org, average_of_lines)
+        curr_steering_angle = stabilize_steering_angle(self.curr_steering_angle, new_steering_angle, len(average_of_lines))
+        return curr_steering_angle 
+    
+    def dispaly_headig_line(self, img_org, angle):
+        curr_heading_image = display_heading_line(img_org, angle)
+        show_image("heading", curr_heading_image, True)
 
-        return self.curr_steering_angle, curr_heading_image
 
 ############################
 # Frame processing steps
 ############################
-def detect_lane(frame):
-    logging.debug('detecting lane lines...')
-    edges = detect_edges(frame)
-    show_image('edges', edges)
-
-    cropped_edges = region_of_interest(edges)
-    show_image('edges cropped', cropped_edges, True)
-
-    line_segments = detect_line_segments(cropped_edges)
-    line_segment_image = display_lines(frame, line_segments)
-    show_image("line segments", line_segment_image)
-
-    lane_lines = average_slope_intercept(frame, line_segments)
-    lane_lines_image = display_lines(frame, lane_lines)
-    show_image("lane lines images", lane_lines_image)
-  
-    return lane_lines, lane_lines_image
-
-'''
-To improve red line detection
-1. change hue value: lower_red1[0], upper_red1[0], lower_red2[0], upper_red2[0]
-recommand values are 170 ~ 180 and 0 ~ 30. we use 2 masks.
-2. change saturation value: lower_red1[1], lower_red2[1]
-recommand values: 70 ~ 100
-3. change value value: lower_red1[1], lower_red2[1]
-recommand values: 30 ~ 100
-'''
-def detect_edges(frame):
-    # filter for red lane lines
+def detect_mask(frame):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     show_image("hsv", hsv)
     # red 
@@ -94,19 +88,27 @@ def detect_edges(frame):
     mask = mask1+mask2
 
     show_image("blue mask", mask, True)
+    return mask
 
+'''
+To improve red line detection
+1. change hue value: lower_red1[0], upper_red1[0], lower_red2[0], upper_red2[0]
+recommand values are 170 ~ 180 and 0 ~ 30. we use 2 masks.
+2. change saturation value: lower_red1[1], lower_red2[1]
+recommand values: 70 ~ 100
+3. change value value: lower_red1[1], lower_red2[1]
+recommand values: 30 ~ 100
+'''
+def detect_edges(frame):
     # detect edges
-    edges = cv2.Canny(mask, 200, 400)
+    edges = cv2.Canny(frame, 200, 400)
     show_image("blue edge", edges)
-
     return edges
 
 def region_of_interest(canny):
     height, width = canny.shape
     mask = np.zeros_like(canny)
-
     # only focus bottom half of the screen
-    
     polygon = np.array([[
         (0, height*(1/2)),
         (width, height*(1/2)),

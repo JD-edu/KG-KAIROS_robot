@@ -59,15 +59,20 @@ while True:
     time.sleep(0.1)
     ret, img_org = cap.read()
     if ret:
-        # Find lane angle
-        lanes, img_lane = cv_detector.get_lane(img_org)
-        angle, img_angle = cv_detector.get_steering_angle(img_lane, lanes)
-        if img_angle is None:
+        cv2.imshow('original', img_org)
+        img_mask = cv_detector.detect_mask(img_org)
+        img_edge = cv_detector.detect_edge(img_mask)
+        img_crop = cv_detector.crop_image(img_edge)
+        line_seg = cv_detector.find_line_seg(img_crop)
+        cv_detector.display_line_seg('line segments', img_org, line_seg)
+        average_of_line = cv_detector.get_average_lane(img_org, line_seg)
+        cv_detector.display_line_seg('average lines', img_org, average_of_line)
+        curr_stering_angle = cv_detector.get_steering_angle(img_org, average_of_line)
+        if average_of_line is None:
             print("can't find lane...")
-            pass
         else:
-            cv2.imshow('lane', img_angle)
-            print(angle)
+            cv_detector.dispaly_headig_line(img_org, curr_stering_angle)
+            print(curr_stering_angle)
         
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
