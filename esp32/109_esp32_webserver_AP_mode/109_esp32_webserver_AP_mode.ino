@@ -25,6 +25,10 @@ SOFTWARE.*/
 #define M1_B    26
 #define M1_A    27
 
+#define FORWARD   1
+#define BACKWARD  2
+#define STOP      3
+
 /* Put your SSID & Password */
 const char* ssid = "esp32";  // Enter SSID here
 const char* password = "123456789";  //Enter Password here
