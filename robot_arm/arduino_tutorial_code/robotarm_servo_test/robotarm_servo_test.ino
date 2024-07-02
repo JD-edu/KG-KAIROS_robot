@@ -68,13 +68,13 @@ void setup() {
   upperarm.write(upperarmAngle);
 
 }
-
-void loop() {
-  int status1 = 0;  // base status
+int status1 = 0;  // base status
   int status2 = 0;
   int status3 = 0;
   int status4 = 0; 
-  int done = 0 ;    // this value tells when all the joints have reached thier positions
+  int done = 0 ;
+void loop() {
+      // this value tells when all the joints have reached thier positions
   while(done == 0){     // Loop until all joints have reached thier positions                      && ready == 1
     //move the servo to the desired position
     //This block of code uses "Functions" to make is more condensed.

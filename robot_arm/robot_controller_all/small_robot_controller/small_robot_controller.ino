@@ -106,7 +106,7 @@ void setup() {
 
 void loop() {
   delay(100);
-  Serial.println(baseAngle);
+  //Serial.println(baseAngle);
   if (Serial.available() > 0){  
     if(Serial.available()){
       inString = Serial.readStringUntil('\n');

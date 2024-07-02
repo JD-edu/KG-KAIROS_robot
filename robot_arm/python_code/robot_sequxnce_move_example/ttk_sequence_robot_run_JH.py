@@ -94,7 +94,7 @@ seq = serial.Serial(
     )
 
 
-seq.port = "COM8"
+seq.port = "COM7"
 seq.open()
 
 angle_0 = 90

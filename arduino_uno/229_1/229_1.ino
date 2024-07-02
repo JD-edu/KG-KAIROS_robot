@@ -5,10 +5,10 @@ void setup() {
 }
 
 void loop() {
-  for(int t_high=0;t_high<=10;t_high++) {
+  for(int t_high=0;t_high<=500;t_high++) {
     digitalWrite(LED, HIGH);
-    delay(t_high);
+    delayMicroseconds(t_high);
     digitalWrite(LED, LOW);
-    delay(10-t_high);
+    delayMicroseconds(500-t_high);
   }
 }
