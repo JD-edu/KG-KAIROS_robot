@@ -48,12 +48,6 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  //base.write(130);
-  //shoulder.write(130);
-  //forearm.write(130);
-  //upperarm.write(130);
-  //delay(2000);
   base.write(90);
   shoulder.write(90);
   forearm.write(90);

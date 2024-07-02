@@ -24,7 +24,7 @@ SOFTWARE.
 import tkinter as tk
 from tkinter import ttk
 
-def uga():
+def uga(selection):
     pass
 
 serial_list = ['시리얼 포트를 선택하세요.']

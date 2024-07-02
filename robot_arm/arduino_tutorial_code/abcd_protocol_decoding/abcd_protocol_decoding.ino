@@ -55,8 +55,8 @@ void loop() {
     second = inString.indexOf('d');
     upperarm_str = inString.substring(first+1, second);
     upperarmAngle = upperarm_str.toInt();
-    Serial.println(" ");
-    Serial.print(upperarmAngle);
+    Serial.print(upperarmAngle); 
+    Serial.print(" ");
     // angle 3
     first = inString.indexOf('d');
     second = inString.indexOf('e');

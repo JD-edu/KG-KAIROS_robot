@@ -24,14 +24,14 @@ SOFTWARE.
 import tkinter as tk
 from tkinter import ttk
 
-def select_serial():
-    pass
+def select_serial(selection):
+    print(selection)
 
 def start_serial():
-    pass
+    print('start serial')
 
 def stop_serial():
-    pass
+    print('stop serial')
 
 serial_list = ['시리얼 포트를 선택하세요.']
 
@@ -64,8 +64,8 @@ start_serial_btn.pack(side='left',padx=10)
 stop_serial_btn = ttk.Button(m_serial_stop_btn, text="Stop serial", command=stop_serial)
 stop_serial_btn.pack(side='left',padx=10)
 
-start_serial_btn.configure(state='disable')
-stop_serial_btn.configure(state='disable')
+start_serial_btn.configure(state='enable')
+stop_serial_btn.configure(state='enable')
 
 # frame layout 
 m_serial_start_btn.pack()

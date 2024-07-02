@@ -33,7 +33,8 @@ def select_serial():
     pass
 
 def start_serial():
-    print("test-1")
+    pass
+    
 
 def stop_serial():
     pass

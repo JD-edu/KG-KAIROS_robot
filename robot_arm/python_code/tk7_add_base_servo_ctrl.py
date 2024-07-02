@@ -26,14 +26,14 @@ import tkinter as tk
 from tkinter import ttk
 import serial 
 
-def select_serial():
-    pass
+def select_serial(selection):
+    print(selection)
 
 def start_serial():
-    pass
+    print('start serial')
 
 def stop_serial():
-    pass
+    print('stop servo')
 
 def slide_handler_base(event):
     global angle_0
@@ -46,7 +46,7 @@ def run_robot():
     global angle_0
     cmd = '2a'+str(int(angle_0))+'b90c90d90e\n'
     print(cmd)
-    seq.write(cmd.encode())
+    ser.write(cmd.encode())
     print(cmd.encode())
 
 def stop_robot():
@@ -86,8 +86,8 @@ start_serial_btn.pack(side='left',padx=10)
 stop_serial_btn = ttk.Button(m_serial_stop_btn, text="Stop serial", command=stop_serial)
 stop_serial_btn.pack(side='left',padx=10)
 
-start_serial_btn.configure(state='disable')
-stop_serial_btn.configure(state='disable')
+start_serial_btn.configure(state='enable')
+stop_serial_btn.configure(state='enaable')
 
 # add servo angle label using frame
 m_link0 = ttk.Frame(root)       # link 0  
@@ -123,13 +123,7 @@ m_robot_run_btn.grid(column=1, row=8,padx=10,pady=5,sticky='w')
 m_robot_stop_btn.grid(column=2, row=8,padx=10,pady=5,sticky='w')
 
 # Serial port 
-seq = serial.Serial(
-            baudrate=115200,
-            parity=serial.PARITY_NONE,
-            stopbits=serial.STOPBITS_ONE,
-            bytesize=serial.EIGHTBITS,
-            timeout=1
-        )
+ser = serial.Serial('COM7', 115200, timeout=1)
         
 
        
