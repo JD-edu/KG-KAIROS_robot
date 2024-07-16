@@ -11,16 +11,16 @@ void ISRencoder(){
 void setup() {
   Serial.begin(115200);
   pinMode(ENCODER,INPUT_PULLUP);
-  attachInterrupt(INT1,ISRencoder,FALLING);
+  attachInterrupt(INT0,ISRencoder,FALLING);
 }
 
 void loop() {
   newTime = millis();
   if(newTime-oldTime > 1000){
-    oldTime = newTime;
+    oldTime = newTime;// \t\errors-when-compiling-esp32-wifi-libraries\10044
     noInterrupts();
     Serial.println(count);
-    count = 0;
+    //count = 0;
     interrupts();
   }
 }

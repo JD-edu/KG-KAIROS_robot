@@ -20,20 +20,22 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN TH
 SOFTWARE.*/
 
-#include<Servo.h>
-#include <U8x8lib.h>
+#include <ESP32Servo.h>
 
 Servo base;
 Servo shoulder;
 Servo upperarm;
 Servo forearm;
 
-
-
 int baseAngle = 90;
 int shoulderAngle = 90;
 int upperarmAngle = 90;
 int forearmAngle = 90;
+
+int base_c = 90;
+int shoulder_c = 90;
+int upper_c = 90;
+int fore_c = 90;
 
 String baseAngle_str;
 String shoulder_str;
@@ -44,16 +46,14 @@ String inString;
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
 
-U8X8_SSD1306_128X64_NONAME_HW_I2C u8x8(/* reset=*/ U8X8_PIN_NONE); 
-
-int servoParallelControl (int thePos, Servo theServo, int speed){
+int servoParallelControl (int thePos, int curr, Servo theServo, int speed){
     // This function moves a servo a certain number of steps toward a desired position and 
     // returns whether or not it is near or hase recahed that position
     // thePos - the desired position
     // thServo - the address pin of the servo that we want to move
     // theSpeed - the delay between steps of the servo
     
-    int startPos = theServo.read();       //read the current position of the servo we are working with.
+    int startPos = curr; //theServo.read();       //read the current position of the servo we are working with.
     int newPos = startPos;                // newPos holds the position of the servo as it moves
     
     //define where the pos is with respect to the command
@@ -79,52 +79,56 @@ int servoParallelControl (int thePos, Servo theServo, int speed){
     }  
 }
 
-void clear_oled(){
-  u8x8.setFont(u8x8_font_chroma48medium8_r);
-  u8x8.drawString(0,0,"                   ");
-  u8x8.drawString(0,1,"                   ");
-  u8x8.drawString(0,2,"                   ");
-  u8x8.drawString(0,3,"                   ");
-  delay(100);
-}
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(115200);
-  base.attach(3);
-  base.write(baseAngle);
-  shoulder.attach(5);
-  shoulder.write(shoulderAngle);
-  upperarm.attach(6);
-  upperarm.write(upperarmAngle);
-  forearm.attach(9);
-  forearm.write(forearmAngle);
-  u8x8.begin();
-  u8x8.setPowerSave(0);
+  ESP32PWM::allocateTimer(0);
+	ESP32PWM::allocateTimer(1);
+	ESP32PWM::allocateTimer(2);
+	ESP32PWM::allocateTimer(3);
 
+  Serial.begin(115200);
+  base.setPeriodHertz(50);  
+  base.attach(5, 500, 2400);
+ 
+  shoulder.setPeriodHertz(50);  
+  shoulder.attach(21, 500, 2400);
+  
+  upperarm.setPeriodHertz(50);  
+  upperarm.attach(18, 500, 2400);
+  
+  forearm.setPeriodHertz(50);  
+  forearm.attach(19, 500, 2400);
+  
+  delay(2000);
+  base.write(baseAngle);
+  shoulder.write(shoulderAngle);
+  upperarm.write(upperarmAngle);
+  forearm.write(forearmAngle);
 }
 
 void loop() {
   delay(100);
   //Serial.println(baseAngle);
-  if (Serial.available() > 0){  
+  
     if(Serial.available()){
       inString = Serial.readStringUntil('\n');
       char cmd = inString[0];
       if(cmd == '1'){
-        clear_oled();
-        u8x8.drawString(0,0,"read angles");
+        Serial.println(cmd);
+       
         Serial.print('a');
-        Serial.print(baseAngle);
+        Serial.print(base_c);
         Serial.print('b');
-        Serial.print(shoulderAngle);
+        Serial.print(shoulder_c);
         Serial.print('c');
-        Serial.print(upperarmAngle);
+        Serial.print(upper_c);
         Serial.print('d');
-        Serial.print(forearmAngle);
+        Serial.print(fore_c);
         Serial.println('e');
       }else if(cmd == '2'){
         // angle 0
+        Serial.println(cmd);
         int first = inString.indexOf('a');
         int second = inString.indexOf('b');
         baseAngle_str = inString.substring(first+1, second);
@@ -144,6 +148,7 @@ void loop() {
         upperarm_str = inString.substring(first+1, second);
         upperarmAngle = upperarm_str.toInt();
         Serial.print(upperarmAngle);
+        Serial.print(" ");
         // angle 3
         first = inString.indexOf('d');
         second = inString.indexOf('e');
@@ -163,10 +168,11 @@ void loop() {
         while(done == 0){     // Loop until all joints have reached thier positions                      && ready == 1
           //move the servo to the desired position
           //This block of code uses "Functions" to make is more condensed.
-          status1 = servoParallelControl(baseAngle, base, 30);         
-          status2 = servoParallelControl(shoulderAngle, shoulder, 30);
-          status3 = servoParallelControl(upperarmAngle, upperarm, 30);      
-          status4 = servoParallelControl(forearmAngle, forearm, 30);  
+          Serial.print("siva");
+          status1 = servoParallelControl(baseAngle, base_c,  base, 30);         
+          status2 = servoParallelControl(shoulderAngle, shoulder_c, shoulder, 30);
+          status3 = servoParallelControl(upperarmAngle, upper_c, upperarm, 30);      
+          status4 = servoParallelControl(forearmAngle, fore_c, forearm, 30);  
 
           // Check whether all the joints have reached their positions
           if (status1 == 1 && status2 == 1 && status3 == 1 && status4 == 1){
@@ -174,12 +180,11 @@ void loop() {
             done = 1; //When done =1 then the loop will stop
           }   
         }// end of while
-        clear_oled();
-        u8x8.setFont(u8x8_font_chroma48medium8_r);
-        u8x8.drawString(0,0,inString.c_str());
-        u8x8.drawString(0,1,baseAngle_str.c_str());
-        u8x8.drawString(0,2,shoulder_str.c_str());
-        u8x8.drawString(0,3,upperarm_str.c_str());
+        base_c = baseAngle;
+        shoulder_c = shoulderAngle;
+        upper_c = upperarmAngle;
+        fore_c = forearmAngle;
+      
         delay(100);
       }else if(cmd == '3'){
         int done = 0;
@@ -190,10 +195,10 @@ void loop() {
         while(done == 0){     // Loop until all joints have reached thier positions                      && ready == 1
             //move the servo to the desired position
             //This block of code uses "Functions" to make is more condensed.
-            status1 = servoParallelControl(90, base, 20);         
-            status2 = servoParallelControl(90, shoulder, 20);
-            status3 = servoParallelControl(90, upperarm, 20);      
-            status4 = servoParallelControl(90, forearm, 20);  
+            status1 = servoParallelControl(90, base_c, base, 20);         
+            status2 = servoParallelControl(90, shoulder_c, shoulder, 20);
+            status3 = servoParallelControl(90, upper_c, upperarm, 20);      
+            status4 = servoParallelControl(90, fore_c, forearm, 20);  
 
             // Check whether all the joints have reached their positions
             if (status1 == 1 && status2 == 1 && status3 == 1 && status4 == 1){
@@ -203,5 +208,5 @@ void loop() {
           }// end of while
       }
     }
-  }
+  
 }

@@ -44,7 +44,7 @@ def slide_handler_base(event):
 
 def run_robot():
     global angle_0
-    cmd = '2a'+str(int(angle_0))+'b90c90d90e\n'
+    cmd = '2a'+str(int(angle_0))+'b'+str(int(angle_0))+'c90d90e\n'
     print(cmd)
     ser.write(cmd.encode())
     print(cmd.encode())
@@ -123,7 +123,7 @@ m_robot_run_btn.grid(column=1, row=8,padx=10,pady=5,sticky='w')
 m_robot_stop_btn.grid(column=2, row=8,padx=10,pady=5,sticky='w')
 
 # Serial port 
-ser = serial.Serial('COM7', 115200, timeout=1)
+ser = serial.Serial('COM3', 115200, timeout=1)
         
 
        
