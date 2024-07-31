@@ -18,7 +18,8 @@ class JDamr(object):
             head = bytearray(self.ser.read())[0]
             if head == 0xf5:
                 payload = [] 
-                for i in range(4):
+                length = bytearray(self.ser.read())[0]
+                for i in range(length):
                     value = bytearray(self.ser.read())[0]
                     payload.append(value)
                 self.parse_cmd(payload)
@@ -40,7 +41,7 @@ class JDamr(object):
         print(encode1)
 
 if __name__ == '__main__':
-    com = 'COM12'
+    com = 'COM6'
     bot = JDamr(com)
     time.sleep(1)
     bot.receive_thread()

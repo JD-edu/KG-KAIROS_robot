@@ -13,10 +13,10 @@ void setup() {
     Serial.print("WiFi connected with IP:");
     Serial.println(WiFi.localIP());
 }
-
+int count = 0;
 void loop() {
     WiFiClient client;
-    if(!client.connect(IPAddress(172,30,1,38), 10000)){    
+    if(!client.connect(IPAddress(172,30,1,55), 10000)){    
     // if (!client.connect("192.168.1.68", 10000)) {          
         Serial.println("Connection to host failed");
         delay(1000);
@@ -31,7 +31,8 @@ void loop() {
             client.print("'b' is sent!");
         }
     } 
-    //client.print("Hello from ESP32!");
+    //count ++;
+    //client.print(count);
     client.stop();
     delay(100);
 }
